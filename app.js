@@ -1,6 +1,19 @@
 var express = require("express");
+var bodyParser = require("body-parser");
 var app = express();
 
+var friends = [
+    "Meggie",
+    "Rita",
+    "Caroline",
+    "Rose",
+    "Janet",
+    "Kaileigh",
+    "Mindy",
+    "Cindy"
+];
+
+app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
 app.get("/", function (req, res) {
@@ -8,20 +21,13 @@ app.get("/", function (req, res) {
 });
 
 app.post("/addfriend", function (req, res) {
-   res.send("You have reached the post route!");
+    //newfriend is the name property from input(friends.ejs)
+    var newFriend = req.body.newfriend;
+    friends.push(newFriend);
+    res.redirect("/friends");
 });
 
 app.get("/friends", function (req, res) {
-    var friends = [
-        "Meggie",
-        "Rita",
-        "Caroline",
-        "Rose",
-        "Janet",
-        "Kaileigh",
-        "Mindy",
-        "Cindy"
-    ];
     res.render("friends", {friends: friends});
 });
 
@@ -30,5 +36,5 @@ app.get("*", function (req, res) {
 });
 
 app.listen(3000, process.env.IP, function () {
-   console.log(">>>>>>> Server Started! <<<<<<<");
+    console.log(">>>>>>> Server Started! <<<<<<<");
 });
